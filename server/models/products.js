@@ -1,10 +1,12 @@
 const mongoose = require("mongoose");
 
 const ProductSchema = {
-    productDescription: String,
     productName: String,
-    inititalPrice: Number,
-    dateAdded: Date 
+    productDescription: String,
+    uploaderContact: Number,
+    inititalBid: Number,
+    deadline: Date,
+    imageURL: String 
 };
 
 const Product = mongoose.model('Product', ProductSchema);

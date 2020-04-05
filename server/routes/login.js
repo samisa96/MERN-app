@@ -10,17 +10,18 @@ router.post('/', (req, res) =>{
             const hash = founduser.password;
             bcrypt.compare(req.body.password, hash, function(err, result) {
                 if(result === true){
+                    res.send({founduser, status: 200});
                     console.log("User authentication success");
                 }
                 else{
-                    console.log("User is not there in our DB");
+                    console.log("Password is wrong");
                 }
             });
-
+        }
+        else{
+            console.log("User doesn't exist");
         }
     })
-
-
 });
 
 module.exports = router;
