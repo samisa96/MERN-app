@@ -7,13 +7,17 @@ import axios from "axios";
 
 function Upload(props){
     const uploadingUser = props.location.user;
-    const [image, setImage] = React.useState(null); 
+    const [image, setImage] = React.useState({
+        // name: "",
+        // type: ""
+    });
     const [productDetails, setProductDeatils] = React.useState({
         productName: "",
         description:"",
         startingBid: "",
         contact: "",
         deadline: ""
+
     });
     function handleChange(event){
         const {name, value} = event.target;
@@ -26,19 +30,29 @@ function Upload(props){
     }
     function handleSubmit(event){
         event.preventDefault();
-        setProductDeatils(prevDetails => {
-            return {
-                ...prevDetails,
-                image: image,
-                originaluser: uploadingUser.userName 
-            };
-        });
-        axios.post('http://localhost:5000/upload', productDetails);
+        const details = {
+            ...productDetails,
+            uploadedUser:props.location.user.userName
+        }
+        const form = new FormData();
+        form.append('file', image);
+        form.append('productname', productDetails.productName);
+        form.append('userName', props.location.user.userName);
+        form.append('description', productDetails.description);
+        form.append('startingBid', productDetails.startingBid);
+        form.append('contact', productDetails.contact);
+        form.append('deadline', productDetails.deadline);
+        axios.post('http://localhost:5000/upload', form);
     }
 
     function handleImageUpload(event){
-        console.log(event.target.files);
-        setImage(event.target.files[0]);
+        console.log(event.target.files[0]);
+        const file = event.target.files[0];
+        // setImage({
+        //     name: file.name,
+        //     type: file.type
+        // })
+        setImage(file);
     }
     
     return (
